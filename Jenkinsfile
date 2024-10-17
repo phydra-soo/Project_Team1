@@ -17,7 +17,7 @@ pipeline {
     stage('Git Clone') {
       steps {
         echo 'Git Clone'
-        git url: 'https://github.com/phydra-soo/Project_Team1.git'
+        git url: 'https://github.com/phydra-soo/Project_Team1.git',
         branch: 'main', credentialsId: 'gitToken' 
       }
       post {
