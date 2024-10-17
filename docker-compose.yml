@@ -1,0 +1,35 @@
+services:
+      mariadb:
+           image: mariadb
+           container_name: mariadb
+           environment:
+             MARIADB_ROOT_PASSWORD: mariadb
+             MARIADB_USER: user
+             MARIADB_PASSWORD: user
+             MARIADB_DATABASE: cvs
+           restart: on-failure
+           command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+           ports:
+              - 3306:3306
+
+
+      team1spring:
+              image: phydra/team1spring
+              container_name: team1spring
+              restart: on-failure
+              depends_on:
+                      - mariadb
+              ports:
+                 - 8080:8080
+              environment:
+                      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/cvs
+                      SPRING_DATASOURCE_USERNAME: user
+                      SPRING_DATASOURCE_PASSWORD: user
+      react404:
+            image: phydra/team1react
+            container_name: team1react
+            restart: on-failure
+            ports:
+               - 3000:3000
+            links:
+               - team1spring
