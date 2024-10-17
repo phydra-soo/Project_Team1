@@ -86,11 +86,11 @@ pipeline {
       steps {
 	echo "Upload to S3"
         dir("${env.WORKSPACE}") {
-	  sh 'zip -r deploy.zip ./deploy appspec.yml'
+	  sh 'zip -r scripts.zip ./scripts docker-compose.yml'
           withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIAL_NAME}"){
-            s3Upload(file:"deploy.zip", bucket:"team1-codedeploy-bucket")
+            s3Upload(file:"scripts.zip", bucket:"team1-codedeploy-bucket")
           }
-        sh 'rm -rf ./deploy.zip'
+        sh 'rm -rf ./scripts.zip'
 	}
       }
     } 
