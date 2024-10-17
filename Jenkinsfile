@@ -14,6 +14,7 @@ pipeline {
   }
 
   stages {
+	  
     stage('Git Clone') {
       steps {
         echo 'Git Clone'
@@ -80,18 +81,18 @@ pipeline {
         """
       }
     }
-
-
-
-    
+	  
+    stage('Upload S3') {
+      steps {
+	echo "Upload to S3"
+        dir("${env.WORKSPACE}") {
+	  sh 'zip -r deploy.zip ./deploy appspec.yml'
+          withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIAL_NAME}"){
+            s3Upload(file:"deploy.zip", bucket:"user04-codedeploy-bucket")
+          }
+        sh 'rm -rf ./deploy.zip'
+	}
+      }
+    } 
   }
-
-
-
-
-
-
-
-  
-
 }
