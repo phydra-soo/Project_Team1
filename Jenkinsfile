@@ -11,6 +11,8 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerCredentials') 
     REGION = "ap-northeast-2"
     AWS_CREDENTIAL_NAME = 'AWSCredentials'
+    BUCKET = "team1-codedeploy-bucket"
+    ZIP_NAME = "scripts.zip"
   }
 
   stages {
@@ -105,7 +107,7 @@ pipeline {
     	  --deployment-group-name team1-code-deploy-${BUILD_NUMBER} \
      	  --deployment-config-name CodeDeployDefault.OneAtATime \
       	  --service-role-arn arn:aws:iam::491085389788:role/Team1-code-deploy-service-role \
-	  --s3-location bucket=team1-codedeploy-bucket,key=scripts.zip,bundleType=zip
+	  --s3-location bucket=${BUCKET},bundleType=zip,key=${ZIP_NAME}
        	  """
 	  sleep(10)
 	}
