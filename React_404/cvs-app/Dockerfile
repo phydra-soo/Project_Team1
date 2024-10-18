@@ -1,12 +1,23 @@
 FROM node:20-alpine
 
-WORKDIR /React404
+WORKDIR /app
 
 COPY package.json ./
 
 RUN npm install
 
-COPY . ./
+COPY webpackDevServer.config.js ./node_modules/config/
+
+RUN ls -l ./node_modules/react-scripts/config/
+RUN cat ./node_modules/react-scripts/config/webpackDevServer.config.js
+
+COPY . .
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY --from=build /app /app
 
 EXPOSE 3000
 
