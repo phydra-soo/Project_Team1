@@ -99,7 +99,7 @@ pipeline {
 	echo "create code-deploy group"
 	sh """
  	aws deploy create-deployment-group \
-  	--aplication-name team1-code-deploy \
+  	--application-name team1-code-deploy \
    	--auto-scaling-groups Team1-target-asg \
     	--deployment-group-name team1-code-deploy-${BUILD_NUMBER} \
      	--deployment-config-name CodeDeployDefault.OneAtATime \
