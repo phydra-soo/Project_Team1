@@ -104,7 +104,7 @@ pipeline {
    	  --auto-scaling-groups Team1-target-asg \
     	  --deployment-group-name team1-code-deploy-${BUILD_NUMBER} \
      	  --deployment-config-name CodeDeployDefault.OneAtATime \
-      	  --service-role-arn arn:aws:iam::491085389788:role/Team1-code-deploy-service-role
+      	  --service-role-arn arn:aws:iam::491085389788:role/Team1-code-deploy-service-role \
       	  --s3-location bucket=team1-codedeploy-bucket,bundleType=zip,key=scripts.zip 
        	  """
 	  sleep(10)
