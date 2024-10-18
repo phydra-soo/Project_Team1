@@ -32,7 +32,7 @@ services:
             ports:
                - 3000:3000
             volumes:
-               - "/Recact404/node_moules"
+               - "/React404/node_moules"
                - "./:/React404"
 
             links:
