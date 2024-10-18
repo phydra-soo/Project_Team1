@@ -45,10 +45,10 @@ pipeline {
         echo 'Docker Image build'                
         dir("${env.WORKSPACE}") {
           sh """
-          docker build -t phydra/demoreact:$BUILD_NUMBER ./React_404/cvs-app/.
-          docker build -t phydra/demospring:$BUILD_NUMBER ./SpringBoot_404/.
-          docker tag phydra/demoreact:$BUILD_NUMBER phydra/demoreact:latest
-          docker tag phydra/demospring:$BUILD_NUMBER phydra/demospring:latest
+          docker build -t phydra/team1react:$BUILD_NUMBER ./React_404/cvs-app/.
+          docker build -t phydra/team1spring:$BUILD_NUMBER ./SpringBoot_404/.
+          docker tag phydra/team1react:$BUILD_NUMBER phydra/demoreact:latest
+          docker tag phydra/team1spring:$BUILD_NUMBER phydra/demospring:latest
           """
         }
       }
@@ -65,8 +65,8 @@ pipeline {
       steps {
         echo 'Docker Image Push'  
           sh """
-          docker push phydra/demoreact:latest
-          docker push phydra/demospring:latest
+          docker push phydra/team1react:latest
+          docker push phydra/team1spring:latest
           """  // docker push
       }
     }
@@ -76,10 +76,10 @@ pipeline {
         // docker image 제거
         echo 'Cleaning up unused Docker images on Jenkins server'
         sh """
-        docker rmi phydra/demoreact:$BUILD_NUMBER
-        docker rmi phydra/demoreact:latest
-        docker rmi phydra/demospring:$BUILD_NUMBER
-        docker rmi phydra/demospring:latest
+        docker rmi phydra/team1react:$BUILD_NUMBER
+        docker rmi phydra/team1react:latest
+        docker rmi phydra/team1spring:$BUILD_NUMBER
+        docker rmi phydra/team1spring:latest
         """
       }
     }
