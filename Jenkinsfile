@@ -104,12 +104,6 @@ pipeline {
     	--deployment-group-name team1-code-deploy-${BUILD_NUMBER} \
      	--deployment-config-name CodeDeployDefault.OneAtATime \
       	--service-role-arn arn:aws:iam::491085389788:role/Team1-code-deploy-service-role
-       	"""
-	echo "codedeploy workload"
-	sh """
- 	aws deploy create-deployment --application-name team1-code-deploy \
-  	--deployment-config-name CodeDeployDefault.OneAtATime \
-   	--deployment-group-name team1-code-deploy-${BUILD_NUMBER} \
       	--s3-location bucket=team1-codedeploy-bucket,bundleType=zip,key=scripts.zip 
        	"""
 	sleep(10)
