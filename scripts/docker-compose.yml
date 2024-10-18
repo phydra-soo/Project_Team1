@@ -32,6 +32,6 @@ services:
             ports:
                - 3000:3000
             volumes:
-               - "/home/ubuntu/webpack:/React404/node_modules/react-scripts/config" 
+               - "/home/ubuntu/webpack:/React404" 
             links:
                - team1spring
