@@ -6,7 +6,7 @@ COPY package.json ./
 
 RUN npm install
 
-COPY webpackDevServer.config.js ./node_modules/config/
+COPY webpackDevServer.config.js ./node_modules/react-scripts/config/
 
 RUN ls -l ./node_modules/react-scripts/config/
 RUN cat ./node_modules/react-scripts/config/webpackDevServer.config.js
