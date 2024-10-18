@@ -33,7 +33,7 @@ services:
                - 3000:3000
             volumes:
                - "/home/ubuntu/webpack
-               - "./React404
+               - "./React404"
 
             links:
                - team1spring
