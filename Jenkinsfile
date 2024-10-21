@@ -47,8 +47,8 @@ pipeline {
           sh """
           docker build -t phydra/team1react:$BUILD_NUMBER ./React_404/cvs-app/.
           docker build -t phydra/team1spring:$BUILD_NUMBER ./SpringBoot_404/.
-          docker tag phydra/team1react:$BUILD_NUMBER phydra/demoreact:latest
-          docker tag phydra/team1spring:$BUILD_NUMBER phydra/demospring:latest
+          docker tag phydra/team1react:$BUILD_NUMBER phydra/team1react:latest
+          docker tag phydra/team1spring:$BUILD_NUMBER phydra/team1spring:latest
           """
         }
       }
