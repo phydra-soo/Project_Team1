@@ -11,7 +11,7 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerCredentials') 
     REGION = "ap-northeast-2"
     AWS_CREDENTIAL_NAME = 'AWSCredentials'
-    BUCKET = "Team1-codedeploy-bucket"
+    BUCKET = "team1-codedeploy-bucket"
     ZIP_NAME = "scripts.zip"
   }
 
