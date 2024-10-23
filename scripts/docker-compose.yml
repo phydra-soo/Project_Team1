@@ -23,8 +23,8 @@ services:
                  - 8080:8080
               environment:
                       SPRING_DATASOURCE_URL: jdbc:mariadb://team1-rds.czcksii66kwf.ap-northeast-2.rds.amazonaws.com:3306/cvs
-              #        SPRING_DATASOURCE_USERNAME: user
-               #       SPRING_DATASOURCE_PASSWORD: user
+                      SPRING_DATASOURCE_USERNAME: user
+                      SPRING_DATASOURCE_PASSWORD: Busanit_1
       react404:
             image: phydra/team1react
             container_name: team1react
