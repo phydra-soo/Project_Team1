@@ -106,7 +106,7 @@ pipeline {
    	  --auto-scaling-groups Team1-target-asg \
     	  --deployment-group-name team1-code-deploy-${BUILD_NUMBER} \
      	  --deployment-config-name CodeDeployDefault.OneAtATime \
-      	  --service-role-arn arn:aws:iam::491085389788:role/Team1-code-deploy-service-role \
+      	  --service-role-arn arn:aws:iam::491085389788:instance-profile/Team1-code-deploy-sevice-role \
 	  """
 	  echo "codedeploy workload"
 	  sh """
