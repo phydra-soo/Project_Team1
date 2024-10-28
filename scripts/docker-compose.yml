@@ -25,6 +25,7 @@ services:
                       SPRING_DATASOURCE_URL: jdbc:mariadb://team1-rds.czcksii66kwf.ap-northeast-2.rds.amazonaws.com:3306/cvs?useUnicode=true&characterEncoding=utf8mb4
                       SPRING_DATASOURCE_USERNAME: user
                       SPRING_DATASOURCE_PASSWORD: Busanit_1
+                      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 10
       react404:
             image: phydra/team1react
             container_name: team1react
