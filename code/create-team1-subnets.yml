@@ -1,0 +1,78 @@
+---
+- hosts: localhost 
+  become yes
+  vars_files:
+    - ./aws_key.yml 
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Pub Subnet-1 
+      ec2_vpc_subnet:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}"
+        cidr: 10.1.0.0/20
+        vpc_id: "{{ vpc_id }}" 
+        region: ap-northeast-2 
+        az: ap-northeast-2a 
+        map_public: yes 
+        state: present
+        tags:
+          Name: Team1_Public_Subnet1 
+      register: subnet_publ
+
+    - name: Create Pub Subnet-2 
+      ec2_vpc_subnet:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}"
+        cidr: 10.1.16.0/20 
+        vpc_id: "{{ vpc_id }}" 
+        region: ap-northeast-2 
+        az: ap-northeast-2c
+        map_public: yes
+        state: present
+        tags:
+          Name: Team1_Public_Subnet2
+      register: subnet_pub2
+
+    - name: Create Private Subnet-1
+      ec2_vpc_subnet:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}"
+        cidr: 10.1.32.0/20
+        vpc_id: "{{ vpc_id }}" 
+        region: ap-northeast-2
+        az: ap-northeast-2a 
+        map_public: false
+        state: present 
+        tags:
+          Name: Team1_Public_Subnet2 
+      register: subnet_pri1
+
+    - name: Create Private Subnet-2
+      ec2_vpc_subnet:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}"
+        cidr: 10.1.48.0/20
+        vpc_id: "{{ vpc_id }}" 
+        region: ap-northeast-2 
+        az: ap-northeast-2c 
+        map_public: false 
+        state: present
+        tags:
+          Name: Team1_Private_Subnet2
+      register: subnet_pri2
+
+    - name: Save Subnet
+      blockinfile:
+        path: ./aws_vars.yml 
+        block: |
+          subnet_pub1_id: "{{ subnet_pub1.subnet.id }}" 
+          subnet_pub2_id: "{{ subnet_pub2.subnet.id }}"
+          subnet_pri1_id: "{{ subnet_pri1.subnet.id }}" 
+          subnet_pri2_id: "{{ subnet_pri2.subnet.id }}"
+        marker: ""I
+
+
+
+
+

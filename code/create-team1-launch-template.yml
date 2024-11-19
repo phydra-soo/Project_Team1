@@ -1,0 +1,38 @@
+- hosts: localhost
+  become: yes
+
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Launch Template from AMI
+      ec2_launch_template:
+        name: Team1-launch-template
+        image_id: "{{ ami_id }}"
+        instance_type: t2.micro
+        key_name: Team1_key
+        iam_instance_profile: "{{ code_deploy_role_name }}"  # IAM Instance Profile 이름
+        security_group_ids:
+          - "{{ sgssh_id }}"
+          - "{{ sgreact_id }}"
+          - "{{ sgrds_id }}"
+        region: ap-northeast-2
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        block_device_mappings:
+          - device_name: /dev/sda1
+            ebs:
+              volume_size: 30  # 볼륨 크기 (GB) 설정
+              volume_type: gp2  # 볼륨 유형 (예: gp2, io1, st1 등)
+      register: launch_template
+
+    - name: Save Launch Template ID and Name
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          lt_id: "{{ launch_template.template.launch_template_id }}"
+          lt_name: "{{ launch_template.template.launch_template_name }}"
+        marker: ""
+      when: launch_template.template.launch_template_id is defined
+

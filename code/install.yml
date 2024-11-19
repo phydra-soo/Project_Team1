@@ -1,0 +1,26 @@
+---
+  - name: "Local Test"
+    hosts: localhost
+    connection: local
+    become: yes
+
+    tasks:
+    - name: "ls command"
+      shell: "ls -al"
+      register: "output"
+    - debug: var=output.stdout_lines
+    - name: install pip
+      yum:
+        name:
+          - python-pip
+          - python3-pip
+        state: present
+      register: pip_result
+    - debug: var=pip_result
+    - name: install boto
+      pip:
+        name:
+          - boto
+          - boto3
+      register: boto_result
+    - debug: var=boto_result

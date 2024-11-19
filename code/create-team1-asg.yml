@@ -1,0 +1,42 @@
+---
+
+- hosts: localhost
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create ASG
+      ec2_asg:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        region: ap-northeast-2
+        name: "Team1-target-asg"
+        launch_template:
+          launch_template_name: "{{ lt_name}}"
+          version: "$Latest"
+        availability_zones:
+          - ap-northeast-2a
+          - ap-northeast-2c
+        vpc_zone_identifier:
+          - "{{ subnet_pri1_id }}"
+          - "{{ subnet_pri2_id }}"
+        min_size: 3
+        max_size: 3
+        desired_capacity: 3
+        target_group_arns:
+          - "{{ team1_react_tg_arn }}"
+        tags:
+          - Name: Team1-target-asg
+        state: present
+      register: asg
+
+    - name: Save asg
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          team1_asg_name: "{{ asg.auto_scaling_group_name }}"
+          team1_asg_arn: "{{ asg.auto_scaling_group_arn }}"
+        marker: ""
+

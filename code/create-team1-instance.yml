@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  become: yes
+
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Jenkins Host
+      ec2:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        instance_tags:
+          Name: Team1-jenkins
+        key_name: Team1_key
+        instance_type: t2.micro
+        image: ami-042e76978adeb8c48
+        region: ap-northeast-2
+        group_id:
+          - "{{ sgssh_id }}"
+          - "{{ sghttp_id }}"
+        vpc_subnet_id: "{{ subnet_pri1_id }}"
+        user_data: "{{ lookup('file', 'set-jenkins.sh') }}"
+        wait: yes
+      register: jenkins
+
+    - name: Save EC2 ID
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          jenkins_id: "{{ jenkins.instances[0].id }}"
+        marker: ""
+

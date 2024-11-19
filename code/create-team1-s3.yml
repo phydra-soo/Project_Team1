@@ -1,0 +1,15 @@
+- hosts: localhost
+  become: yes
+
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create S3 Bucket
+      s3_bucket:
+        name: team1-codedeploy-bucket
+        state: present
+        region: ap-northeast-2
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"

@@ -1,0 +1,26 @@
+---
+
+- name: Create IAM Role and Policy for EC2
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - ./aws_key.yml
+
+  tasks:
+    - name: Create team1-code-deploy-ec2-role
+      iam_role:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        name: team1-code-deploy-ec2-role
+        assume_role_policy_document: "{{ lookup('file', 'ec2-trust-policy.json') }}"
+        state: present
+
+    - name: Create IAM Policy
+      iam_policy:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        iam_name: team1-code-deploy-ec2-rile
+        iam_type: role
+        policy_name: team1-code-deploy-ec2-policy
+        policy_json: "{{ lookup('template', 'team1-ec2-policy.json') }}"
+        state: present

@@ -1,0 +1,35 @@
+---
+
+- hosts: localhost 
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Internet Gateway ec2_vpc_igw:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}" 
+        vpc_id: "{{ vpc_id }}"
+        region: ap-northeast-2
+        state: present
+        tags:
+          Name: Team1_Internet_Gateway
+      register: igw
+      
+    - name: Create Nat Gateway ec2_vpc_nat_gateway:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}" 
+        state: present
+        subnet_id: "{{ subnet_pub1_id }}" 
+        region: ap-northeast-2
+      register: natgw
+
+    - name: Save gateway
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          igw_id: "{{ igw.gateway_id }}" 
+          natgw_id: "{{ natgw.nat_gateway_id }}" 
+        marker: ""
+I

@@ -1,0 +1,67 @@
+---
+- hosts: localhost
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Target Group Jenkins
+      elb_target_group:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        name: Team1-jenkins-tg
+        vpc_id: "{{ vpc_id }}"
+        health_check_interval: 30
+        health_check_timeout: 5
+        health_check_path: /
+        port: 80
+        protocol: HTTP
+        region: ap-northeast-2
+        state: present
+      register: target_group
+
+    - name: Create Target Group React
+      elb_target_group:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        name: Team1-react-tg
+        vpc_id: "{{ vpc_id }}"
+        health_check_interval: 30
+        health_check_timeout: 5
+        health_check_path: /
+        port: 3000
+        protocol: HTTP
+        region: ap-northeast-2
+        state: present
+      register: target_react
+
+    - name: Save Jenkins Target Group ID
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          team1_jenkins_tg_name: "Team1-jenkins-tg"
+          team1_jenkins_tg_id: "{{ target_group.target_group_arn }}"
+        marker: ""
+      when: target_group.target_group_arn is defined
+
+    - name: Save React Target Group ID
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          team1_react_tg_name: "Team1-react-tg"
+          team1_react_tg_id: "{{ target_react.target_group_arn }}"
+        marker: ""
+      when: target_react.target_group_arn is defined
+
+    - name: Register Jenkins instance with Target Group
+      elb_target:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        target_group_arn: "{{ target_group.target_group_arn }}"
+        target_id: "{{ jenkins_id }}"  # aws_vars.yml에서 불러온 Jenkins 인스턴스 ID
+        region: ap-northeast-2
+        target_port: 80
+        state: present
+      when: jenkins_id is defined
+

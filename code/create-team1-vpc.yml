@@ -1,0 +1,22 @@
+---
+
+- hosts: localhost
+  become: yes
+  vars_files:
+   - ./aws_key.yml
+
+  tasks:
+    - name: Create VPC
+      ec2_vpc_net:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}" 
+        name: Team1_VPC
+        cidr_block: 10.1.0.0/16
+        region: ap-northeast-2
+        state: present register: vpc_result
+
+    - name: Save VPC
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          vpc_id : "{{ vpc_result.vpc.id }}"

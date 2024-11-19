@@ -1,0 +1,32 @@
+---
+
+- hosts: localhost
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create record 1
+      route53:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        zone: "jinlabs.net"
+        record: "project01.jinlabs.net"
+        type: "A"
+        alias: yes
+        alias_hosted_zone_id: "ZWKZPGTI48KDX"
+        value: "team1-alb-1289738790.ap-northeast-2.elb.amazonaws.com"
+        state: present
+
+    - name: Create record 2
+      route53:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        zone: "jinlabs.net"
+        record: "main.project01.jinlabs.net"
+        type: "A"
+        alias: yes
+        alias_hosted_zone_id: "ZWKZPGTI48KDX"
+        value: "team1-alb-1289738790.ap-northeast-2.elb.amazonaws.com"
+        state: present

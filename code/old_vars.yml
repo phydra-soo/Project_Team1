@@ -1,0 +1,44 @@
+vpc_id : "vpc-000f0e8056ce4e61a"
+
+subnet_pub1_id: "subnet-0e272064bed820918"
+subnet_pub2_id: "subnet-0729bf25b76d5ae02"
+subnet_pri1_id: "subnet-0fe998c554d731bb1"
+subnet_pri2_id: "subnet-0d51c287beac81004"
+
+igw_id: "igw-0bc36be15a4a42339"
+natgw_id: "nat-00f0180a997342f68"
+
+route_pub_id: "rtb-0e51e0343737abf93"
+route_pri1_id: "rtb-0c53bd7ffba6ba2f9"
+route_pri2_id: "rtb-0a9114f0866cb740e"
+
+sgssh_id: "sg-077508ea49f15a65a"
+sghttp_id: "sg-0e3d801ee04959e3d"
+sgreact_id: "sg-078709bb98cf67b78"
+sgrds_id: "sg-0743808e77cd9848a"
+
+target_id: "i-03406d4b5ed1de062"
+
+ami_id: "ami-0f185be04cd2ab41d"
+
+
+code_deploy_role_name: "Team1-code-deploy-ec2-role"
+
+lt_id: "lt-07d6f50c5ca03a6c4"
+lt_name: "Team1-launch-template"
+
+team1_tg_name: "Team1-jenkins-tg"
+team1_tg_id: "arn:aws:elasticloadbalancing:ap-northeast-2:491085389788:targetgroup/Team1-jenkins-tg/37db01fa9325e2d6"
+
+
+team1_jenkins_tg_name: "Team1-jenkins-tg"
+team1_jenkins_tg_arn: "arn:aws:elasticloadbalancing:ap-northeast-2:491085389788:targetgroup/Team1-jenkins-tg/37db01fa9325e2d6"
+
+team1_react_tg_name: "Team1-react-tg"
+team1_react_tg_arn: "arn:aws:elasticloadbalancing:ap-northeast-2:491085389788:targetgroup/Team1-react-tg/886ba68fb2632def"
+
+
+team1_asg_name: "Team1-target-asg"
+team1_asg_arn: "arn:aws:autoscaling:ap-northeast-2:491085389788:autoScalingGroup:2b47b6ab-2215-4149-9339-0d4298e90953:autoScalingGroupName/Team1-target-asg"
+
+jenkins_id: "i-00ff71eebedd47e72"

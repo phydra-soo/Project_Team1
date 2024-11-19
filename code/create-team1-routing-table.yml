@@ -1,0 +1,68 @@
+---
+
+- hosts: localhost 
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Public Routing Table
+      ec2_vpc_route_table:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}" 
+        vpc_id : "{{ vpc_id }}" 
+        region: ap-northeast-2 
+        tags:
+          Name: Team1_Public_route 
+        subnets:
+          - "{{ subnet_pub1_id }}" 
+          - "{{ subnet_pub2_id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw_id }}"
+          - dest: 10.1.0.0/16
+            gateway_id: local
+      register: PubRt
+
+    - name: Private1 Routing Table
+      ec2_vpc_route_table:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}"
+        vpc_id: "{{ vpc_id }}"
+        region: ap-northeast-2 
+        tags:
+          Name: Team1_Private_route_1
+        subnets:
+          - "{{ subnet_pril_id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ natgw_id }}" 
+          - dest: 10.1.0.0/16
+            gateway_id: local
+      register: PriRt1
+
+    - name: Private2 Routing Table
+      ec2_vpc_route_table:
+        aws_access_key: "{{ access_key }}" 
+        aws_secret_key: "{{ secret_key }}" 
+        vpc_id: "{{ vpc_id }}" 
+        region: ap-northeast-2 
+        tags:
+          Name: Team1_Private_route_2 
+        subnets:
+          - "{{ subnet_pri2_id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ natgw_id }}"
+          - dest: 10.1.0.0/16
+      register: PriRt2
+        
+    - name: Save gateway
+      blockinfile:
+        path: ./aws_vars.yml
+        block: |
+          route_pub_id: "{{ PubRt.route_table.id }}"
+          route_pri1_id: "{{ PriRt1.route_table.id }}" 
+          route_pri2_id: "{{ PriRt2.route_table.id }}" 
+        marker: ""

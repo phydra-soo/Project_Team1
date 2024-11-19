@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Application Load Balancer with Listener and Rules
+      elb_application_lb:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        name: team1-alb
+        region: ap-northeast-2
+        security_groups:
+          - "{{ sghttp_id }}"
+          - "{{ sgreact_id }}"
+          - "{{ sgrds_id }}"
+        subnets:
+          - "{{ subnet_pub1_id }}"
+          - "{{ subnet_pub2_id }}"
+        state: present
+        listeners:
+          - Port: 80
+            Protocol: HTTP
+            DefaultActions:
+              - Type: "forward"
+                TargetGroupName: "{{ team1_jenkins_tg_name }}"  # Jenkins Target Group ID
+            Rules:
+              - Conditions:
+                  - Field: "host-header"
+                    Values:
+                      - "main.project01.jinlabs.net"
+                Priority: '1'
+                Actions:
+                  - Type: "forward"
+                    TargetGroupName: "{{ team1_react_tg_name }}"  # React Target Group ID
+

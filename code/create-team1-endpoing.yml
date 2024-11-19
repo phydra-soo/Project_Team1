@@ -1,0 +1,22 @@
+---
+
+- hosts: localhost
+  become: yes
+  vars_files:
+    - ./aws_key.yml
+    - ./aws_vars.yml
+
+  tasks:
+    - name: Create Endpoint
+      ec2_vpc_endpoint:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        state: present
+        region: ap-northeast-2
+        vpc_id: "{{ vpc_id }}"
+        service: com.amazonaws.ap-northeast-2.s3
+        route_table_ids:
+          - "{{ route_pri1_id }}"
+          - "{{ route_pri2_id }}"
+      register: Endpoint
+
